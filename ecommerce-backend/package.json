@@ -17,5 +17,8 @@
     "install": "^0.13.0",
     "nodemon": "^3.1.14",
     "npm": "^11.16.0"
+  },
+  "dependencies": {
+    "mongoose": "^9.6.3"
   }
 }
