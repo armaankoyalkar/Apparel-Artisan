@@ -162,11 +162,9 @@ router.put("/update/:productId", protect, async (req, res) => {
     }
 
     if (qty > product.countInStock) {
-      return res
-        .status(400)
-        .json({
-          message: `Quantity exceeds available stock (${product.countInStock})`,
-        });
+      return res.status(400).json({
+        message: `Quantity exceeds available stock (${product.countInStock})`,
+      });
     }
 
     cart.items[itemIndex].qty = qty;
