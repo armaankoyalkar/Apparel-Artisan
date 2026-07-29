@@ -61,14 +61,6 @@ cartSchema.pre("save", function (next) {
   next();
 });
 
-// Optional: Pre-remove hook to clean up cart when user is deleted
-cartSchema.pre("remove", async function (next) {
-  await this.model("Product").deleteMany({
-    _id: { $in: this.items.map((item) => item.product) },
-  });
-  next();
-});
-
 // Create Cart model
 const Cart = mongoose.model("Cart", cartSchema);
 

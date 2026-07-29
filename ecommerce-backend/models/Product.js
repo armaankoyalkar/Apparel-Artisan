@@ -24,11 +24,7 @@ const productSchema = new mongoose.Schema({
   },
   imageUrl: {
     type: String,
-    required: false, // Optional for now, can be added later
-    match: [
-      /^https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg)$/i,
-      "Please provide a valid image URL",
-    ], // Basic URL validation
+    default: "",
   },
   category: {
     type: String,
@@ -41,6 +37,10 @@ const productSchema = new mongoose.Schema({
     required: [true, "Please provide product brand"],
     trim: true,
     index: true, // Adding an index for search optimization
+  },
+  sizes: {
+    type: [String],
+    default: [],
   },
   createdAt: {
     type: Date,
