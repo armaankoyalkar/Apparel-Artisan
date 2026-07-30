@@ -31,14 +31,18 @@ router.get("/", protect, async (req, res) => {
 // --- @route  POST /api/cart/add ---
 // --- @access Private ---
 router.post("/add", protect, async (req, res) => {
-  const { productId, qty } = req.body;
-
+  const { productId, qty = 1 } = req.body;
+  if (!Number.isInteger(qty) || qty < 1) {
+    return res.status(400).json({ message: "Quantity must be a positive integer" });
+  }
   try {
     const product = await Product.findById(productId);
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-
+    if (product.countInStock < 1) {
+      return res.status(400).json({ message: "This product is out of stock" });
+    }
     let cart = await Cart.findOne({ user: req.user._id });
 
     if (!cart) {
@@ -132,10 +136,10 @@ router.put("/update/:productId", protect, async (req, res) => {
   const { productId } = req.params;
   const { qty } = req.body;
 
-  if (qty === undefined || qty <= 0) {
+  if (!Number.isInteger(qty) || qty <= 0) {
     return res
       .status(400)
-      .json({ message: "Quantity must be a positive number" });
+      .json({ message: "Quantity must be a positive integer" });
   }
 
   try {

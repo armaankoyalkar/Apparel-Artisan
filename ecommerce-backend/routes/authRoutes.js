@@ -16,9 +16,13 @@ const generateToken = (id) => {
 // --- @route  POST /api/auth/register ---
 // --- @access Public ---
 router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
-
+  const name = req.body.name?.trim();
+  const email = req.body.email?.trim().toLowerCase();
+  const { password } = req.body;
   try {
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email, and password are required" });
+    }
     // Check if user already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -61,9 +65,12 @@ router.post("/register", async (req, res) => {
 // --- @route  POST /api/auth/login ---
 // --- @access Public ---
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-
+  const email = req.body.email?.trim().toLowerCase();
+  const { password } = req.body;
   try {
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
     // Check for user email
     const user = await User.findOne({ email });
 

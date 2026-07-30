@@ -42,7 +42,7 @@ router.get("/:id", async (req, res) => {
 // --- @route  POST /api/products ---
 // --- @access Private/Admin ---
 router.post("/", protect, admin, async (req, res) => {
-  const { name, description, price, countInStock, imageUrl, category, brand } =
+  const { name, description, price, countInStock, imageUrl, category, brand, sizes } =
     req.body;
 
   // Validation
@@ -64,6 +64,7 @@ router.post("/", protect, admin, async (req, res) => {
       imageUrl,
       category,
       brand,
+      sizes,
     });
 
     const createdProduct = await product.save();
@@ -78,7 +79,7 @@ router.post("/", protect, admin, async (req, res) => {
 // --- @route  PUT /api/products/:id ---
 // --- @access Private/Admin ---
 router.put("/:id", protect, admin, async (req, res) => {
-  const { name, description, price, countInStock, imageUrl, category, brand } =
+  const { name, description, price, countInStock, imageUrl, category, brand, sizes } =
     req.body;
 
   // Validation
@@ -103,7 +104,7 @@ router.put("/:id", protect, admin, async (req, res) => {
       product.imageUrl = imageUrl || product.imageUrl;
       product.category = category || product.category;
       product.brand = brand || product.brand;
-
+      product.sizes = Array.isArray(sizes) ? sizes : product.sizes;
       const updatedProduct = await product.save();
       res.json(updatedProduct);
     } else {
@@ -126,7 +127,7 @@ router.delete("/:id", protect, admin, async (req, res) => {
     const product = await Product.findById(req.params.id);
 
     if (product) {
-      await product.remove(); // Mongoose v5.x, use deleteOne({ _id: req.params.id }) for v6+
+      await product.deleteOne();
       res.json({ message: "Product removed" });
     } else {
       res.status(404).json({ message: "Product not found" });
