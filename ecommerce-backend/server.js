@@ -8,6 +8,8 @@ const cartRoutes = require("./routes/cartRoutes"); // Import cart routes
 const orderRoutes = require("./routes/orderRoutes");
 const app = express();
 const PORT = process.env.PORT || 5000;
+const dns = require("dns");
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 // Middleware
 app.use(
