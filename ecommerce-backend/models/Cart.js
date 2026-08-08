@@ -1,6 +1,5 @@
-// models/Cart.js
 const mongoose = require("mongoose");
-
+ 
 const cartItemSchema = new mongoose.Schema({
   product: {
     type: mongoose.Schema.Types.ObjectId,
@@ -32,7 +31,7 @@ const cartItemSchema = new mongoose.Schema({
   // size: { type: String }, // Example of custom field
   // color: { type: String }, // Example of custom field
 });
-
+ 
 // Cart schema for the user's cart
 const cartSchema = new mongoose.Schema({
   user: {
@@ -52,15 +51,15 @@ const cartSchema = new mongoose.Schema({
     default: Date.now,
   },
 });
-
+ 
 // Update 'updatedAt' field whenever the cart is updated
 cartSchema.pre("save", function () {
   if (this.isModified("items")) {
     this.updatedAt = Date.now(); // Update 'updatedAt' when cart items change
   }
 });
-
+ 
 // Create Cart model
 const Cart = mongoose.model("Cart", cartSchema);
-
+ 
 module.exports = Cart;

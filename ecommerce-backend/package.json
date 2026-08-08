@@ -13,15 +13,13 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "install": "^0.13.0",
-    "nodemon": "^3.1.14",
-    "npm": "^11.16.0"
+    "nodemon": "^3.1.14"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.9.1"
   }
