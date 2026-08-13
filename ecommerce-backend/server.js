@@ -8,6 +8,7 @@ const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
 const cartRoutes = require("./routes/cartRoutes"); // Import cart routes
 const orderRoutes = require("./routes/orderRoutes");
+const cronJob = require("./lib/cronJob");
 const app = express();
 const PORT = process.env.PORT || 5000;
 const dns = require("dns");
@@ -21,6 +22,12 @@ app.use(
   cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:3000" }),
 );
 app.use(express.json()); // To parse JSON bodies
+
+// Lightweight endpoint the keep-alive cron job (lib/cronJob.js) pings on
+// Render to prevent the free-tier service from going idle.
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
  
 // Mount Routes
 app.use("/api/auth", authRoutes);
@@ -64,6 +71,7 @@ const startServer = async () => {
     await connectDB();
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
+      cronJob.start();
     });
   } catch (error) {
     console.error("Unable to start the API. Check your environment configuration.");
